@@ -1,5 +1,5 @@
 import React from 'react';
-import { Info, GithubLogo, InstagramLogo } from '@phosphor-icons/react';
+import { Info, GithubLogo, InstagramLogo, ShieldCheck } from '@phosphor-icons/react';
 
 const Tentang = () => {
     return (
