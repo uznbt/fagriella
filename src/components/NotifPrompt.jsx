@@ -43,7 +43,7 @@ const NotifPrompt = () => {
 
                     <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-black text-neutral-800 dark:text-white uppercase tracking-tight">Aktifkan Notifikasi?</h4>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">Dapatkan info tugas & jadwal kuliah terbaru.</p>
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400">Dapatkan info tugas & jadwal kuliah terbaru.</p>
                     </div>
 
                     <div className="flex gap-2 items-center">

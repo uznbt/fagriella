@@ -2,9 +2,11 @@ import { House, Images, DiceFive, UploadSimple, Gear, Info, Sun, Moon, BookOpen 
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
+import { useNotification } from '../contexts/NotificationContext';
 
 const DesktopLayout = ({ children }) => {
     const { isDarkMode, toggleTheme } = useTheme();
+    const { isSubscribed, isSupported } = useNotification();
     const location = useLocation();
 
     const getHeaderTitle = () => {
@@ -93,8 +95,14 @@ const DesktopLayout = ({ children }) => {
                                 </motion.div>
                             </AnimatePresence>
                         </button>
-                        <button className="p-2 hover:bg-neutral-100 dark:hover:bg-white/5 rounded-full transition-colors text-neutral-600 dark:text-neutral-400">
+                        <button
+                            onClick={() => navigate('/pengaturan')}
+                            className="p-2 hover:bg-neutral-100 dark:hover:bg-white/5 rounded-full transition-colors text-neutral-600 dark:text-neutral-400 relative"
+                        >
                             <Gear size={22} />
+                            {isSupported && !isSubscribed && (
+                                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 border-2 border-white dark:border-[#0b1311] rounded-full animate-pulse"></span>
+                            )}
                         </button>
                     </div>
                 </header>

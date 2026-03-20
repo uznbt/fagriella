@@ -3,9 +3,11 @@ import { House, Images, DiceFive, UploadSimple, Plus, Gear, Sun, Moon, BookOpen,
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
+import { useNotification } from '../contexts/NotificationContext';
 
 const MobileLayout = ({ children }) => {
     const { isDarkMode, toggleTheme } = useTheme();
+    const { isSubscribed, isSupported } = useNotification();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -102,7 +104,12 @@ const MobileLayout = ({ children }) => {
                     <MobileNavItem to="/undi" icon={<DiceFive size={20} weight="bold" />} label="Spin" />
                 </div>
                 <div className="flex justify-center relative -top-1">
-                    <MobileNavItem to="/pengaturan" icon={<Gear size={20} weight="bold" />} label="Opsi" />
+                    <div className="relative">
+                        <MobileNavItem to="/pengaturan" icon={<Gear size={20} weight="bold" />} label="Opsi" />
+                        {isSupported && !isSubscribed && (
+                            <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-[#2a4d44] rounded-full animate-pulse pointer-events-none"></span>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

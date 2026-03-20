@@ -21,6 +21,12 @@ const Admin = () => {
         setLoading(true);
         setStatus({ type: '', msg: '' });
 
+        // URL Validation (Parity with legacy)
+        let finalUrl = url;
+        if (finalUrl && !finalUrl.startsWith('http')) {
+            finalUrl = 'https://' + finalUrl;
+        }
+
         try {
             const response = await fetch('/api/notify', {
                 method: 'POST',
@@ -31,7 +37,7 @@ const Admin = () => {
                 body: JSON.stringify({
                     title,
                     body: message,
-                    url
+                    url: finalUrl
                 })
             });
 
@@ -141,6 +147,22 @@ const Admin = () => {
                             <div className={`p-4 rounded-2xl flex items-start gap-3 animate-in fade-in zoom-in-95 duration-300 ${status.type === 'error' ? 'bg-red-50 text-red-600 dark:bg-red-500/10' : 'bg-brand/5 text-brand dark:bg-amber-500/10 dark:text-amber-500'}`}>
                                 <WarningCircle size={20} className="flex-shrink-0 mt-0.5" />
                                 <p className="text-xs font-bold leading-relaxed">{status.msg}</p>
+                            </div>
+                        )}
+
+                        {/* Preview Section */}
+                        {title && message && (
+                            <div className="pt-4 space-y-3">
+                                <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest px-1">Pratinjau (Preview)</p>
+                                <div className="bg-neutral-50 dark:bg-white/5 border border-neutral-100 dark:border-white/10 p-4 rounded-2xl flex items-start gap-3 shadow-inner">
+                                    <div className="w-10 h-10 bg-brand/10 dark:bg-amber-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <Megaphone size={20} className="text-brand dark:text-amber-500" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h5 className="text-xs font-black text-neutral-800 dark:text-white truncate">{title}</h5>
+                                        <p className="text-[10px] text-neutral-500 dark:text-neutral-400 line-clamp-2">{message}</p>
+                                    </div>
+                                </div>
                             </div>
                         )}
 

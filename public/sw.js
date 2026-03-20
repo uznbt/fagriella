@@ -64,7 +64,7 @@ self.addEventListener('push', (event) => {
         const data = event.data.json();
         const options = {
             body: data.body,
-            icon: '/icons/logo.webp',
+            icon: data.icon || '/icons/logo.webp',
             badge: '/icons/logo.webp',
             vibrate: [100, 50, 100],
             data: { url: data.data?.url || '/' }

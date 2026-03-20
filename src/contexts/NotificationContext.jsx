@@ -20,6 +20,12 @@ export const NotificationProvider = ({ children }) => {
     }, []);
 
     const checkSubscription = async () => {
+        // Init fingerprint if not exists (Parity with legacy)
+        if (!localStorage.getItem('user_fingerprint')) {
+            const fingerprint = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('user_fingerprint', fingerprint);
+        }
+
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.getSubscription();
         setIsSubscribed(!!subscription);
