@@ -15,7 +15,7 @@ const Admin = () => {
     const handleSend = async (e) => {
         e.preventDefault();
         if (!apiKey || !title || !message) {
-            setStatus({ type: 'error', msg: 'Lengkapi TOKEN PJ, Judul, dan Pesan!' });
+            setStatus({ type: 'error', msg: 'Lengkapi TOKEN, Judul, dan Pesan!' });
             return;
         }
 
@@ -46,7 +46,7 @@ const Admin = () => {
                 setTitle('');
                 setMessage('');
             } else {
-                setStatus({ type: 'error', msg: result.message || 'Gagal mengirim. Cek TOKEN PJ Anda.' });
+                setStatus({ type: 'error', msg: result.message || 'Gagal mengirim. Cek TOKEN Anda.' });
             }
         } catch (error) {
             setStatus({ type: 'error', msg: 'Koneksi ke GAS bermasalah atau API tidak merespon.' });
@@ -80,11 +80,11 @@ const Admin = () => {
 
                     <form onSubmit={handleSend} className="space-y-6">
                         <div className="space-y-4">
-                            {/* Token PJ */}
+                            {/* Token */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-[10px] font-black text-neutral-400 uppercase tracking-widest px-1">
                                     <ShieldCheck size={14} />
-                                    TOKEN PJ
+                                    TOKEN
                                 </label>
                                 <input
                                     type="password"
