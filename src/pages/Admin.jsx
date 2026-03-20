@@ -65,7 +65,7 @@ const Admin = () => {
                 <span className="text-xs font-black uppercase tracking-widest">Kembali</span>
             </button>
 
-            <div className="bg-white dark:bg-[#14231f] rounded-[2.5rem] border border-neutral-100 dark:border-white/5 p-8 md:p-12 shadow-2xl shadow-brand/5 relative overflow-hidden">
+            <div className="bg-white dark:bg-[#14231f] rounded-[2.5rem] border border-neutral-100 dark:border-white/5 p-8 md:p-12 md:shadow-2xl md:shadow-brand/5 relative overflow-hidden">
                 {/* Background Decor */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand/5 dark:bg-amber-500/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
 
@@ -152,7 +152,7 @@ const Admin = () => {
                         {title && message && (
                             <div className="pt-4 space-y-3">
                                 <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest px-1">Pratinjau (Preview)</p>
-                                <div className="bg-neutral-50 dark:bg-white/5 border border-neutral-100 dark:border-white/10 p-4 rounded-2xl flex items-start gap-3 shadow-inner">
+                                <div className="bg-neutral-50 dark:bg-white/5 border border-neutral-100 dark:border-white/10 p-4 rounded-2xl flex items-start gap-3 md:shadow-inner">
                                     <div className="w-10 h-10 bg-brand/10 dark:bg-amber-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
                                         <Megaphone size={20} className="text-brand dark:text-amber-500" />
                                     </div>
@@ -167,7 +167,7 @@ const Admin = () => {
                         <button
                             type="submit"
                             disabled={loading || !apiKey || !title || !message}
-                            className="w-full bg-brand dark:bg-amber-500 text-white dark:text-black py-5 rounded-[1.5rem] font-black text-sm uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 shadow-xl shadow-brand/20 dark:shadow-amber-900/10 flex items-center justify-center gap-3 mt-4"
+                            className="w-full bg-brand dark:bg-amber-500 text-white dark:text-black py-5 rounded-[1.5rem] font-black text-sm uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 md:shadow-xl md:shadow-brand/20 dark:md:shadow-amber-900/10 flex items-center justify-center gap-3 mt-4"
                         >
                             {loading ? (
                                 <>
