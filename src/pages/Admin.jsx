@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Megaphone, PaperPlaneTilt, Spinner, ArrowLeft, ShieldCheck, Link, TextT, WarningCircle } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
+import { SYNC_SCRIPT_URL } from '../config';
 
 const Admin = () => {
     const navigate = useNavigate();
-    const [apiKey, setApiKey] = useState('');
+    const [apiKey, setApiKey] = useState(''); // This will be "Nama PJ"
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
     const [url, setUrl] = useState('https://fagriella.vercel.app');
@@ -14,7 +15,7 @@ const Admin = () => {
     const handleSend = async (e) => {
         e.preventDefault();
         if (!apiKey || !title || !message) {
-            setStatus({ type: 'error', msg: 'Lengkapi Token PJ, Judul, dan Pesan!' });
+            setStatus({ type: 'error', msg: 'Lengkapi Nama PJ, Judul, dan Pesan!' });
             return;
         }
 
@@ -28,30 +29,27 @@ const Admin = () => {
         }
 
         try {
-            const response = await fetch('/api/notify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': apiKey
-                },
-                body: JSON.stringify({
-                    title,
-                    body: message,
-                    url: finalUrl
-                })
+            // Verifikasi via GAS Proxy menggunakan Nama PJ (Token)
+            const params = new URLSearchParams({
+                action: 'verify_notify',
+                token: apiKey,
+                title: title,
+                body: message,
+                url: finalUrl
             });
 
+            const response = await fetch(SYNC_SCRIPT_URL + '?' + params.toString());
             const result = await response.json();
 
-            if (response.ok) {
-                setStatus({ type: 'success', msg: `Berhasil! Notifikasi dikirim ke ${result.results?.length || 0} perangkat.` });
+            if (result.status === 'success') {
+                setStatus({ type: 'success', msg: result.message || 'Notifikasi berhasil dikirim!' });
                 setTitle('');
                 setMessage('');
             } else {
-                setStatus({ type: 'error', msg: result.error || 'Gagal mengirim. Cek Token PJ Anda.' });
+                setStatus({ type: 'error', msg: result.message || 'Gagal mengirim. Cek Nama PJ Anda.' });
             }
         } catch (error) {
-            setStatus({ type: 'error', msg: 'Koneksi bermasalah atau API tidak merespon.' });
+            setStatus({ type: 'error', msg: 'Koneksi ke GAS bermasalah atau API tidak merespon.' });
         } finally {
             setLoading(false);
         }
@@ -82,17 +80,17 @@ const Admin = () => {
 
                     <form onSubmit={handleSend} className="space-y-6">
                         <div className="space-y-4">
-                            {/* Token PJ */}
+                            {/* Nama PJ */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-[10px] font-black text-neutral-400 uppercase tracking-widest px-1">
                                     <ShieldCheck size={14} />
-                                    Token PJ (Password)
+                                    Nama PJ (Token)
                                 </label>
                                 <input
-                                    type="password"
+                                    type="text"
                                     value={apiKey}
                                     onChange={(e) => setApiKey(e.target.value)}
-                                    placeholder="••••••••"
+                                    placeholder="Masukkan nama PJ Anda..."
                                     className="w-full bg-neutral-50 dark:bg-white/5 border border-neutral-100 dark:border-white/10 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-brand dark:focus:ring-amber-500 outline-none transition-all font-mono"
                                 />
                             </div>
