@@ -15,7 +15,7 @@ const Admin = () => {
     const handleSend = async (e) => {
         e.preventDefault();
         if (!apiKey || !title || !message) {
-            setStatus({ type: 'error', msg: 'Lengkapi Nama PJ, Judul, dan Pesan!' });
+            setStatus({ type: 'error', msg: 'Lengkapi TOKEN PJ, Judul, dan Pesan!' });
             return;
         }
 
@@ -29,7 +29,7 @@ const Admin = () => {
         }
 
         try {
-            // Verifikasi via GAS Proxy menggunakan Nama PJ (Token)
+            // Verifikasi via GAS Proxy menggunakan Token (Nama PJ)
             const params = new URLSearchParams({
                 action: 'verify_notify',
                 token: apiKey,
@@ -46,7 +46,7 @@ const Admin = () => {
                 setTitle('');
                 setMessage('');
             } else {
-                setStatus({ type: 'error', msg: result.message || 'Gagal mengirim. Cek Nama PJ Anda.' });
+                setStatus({ type: 'error', msg: result.message || 'Gagal mengirim. Cek TOKEN PJ Anda.' });
             }
         } catch (error) {
             setStatus({ type: 'error', msg: 'Koneksi ke GAS bermasalah atau API tidak merespon.' });
@@ -80,17 +80,17 @@ const Admin = () => {
 
                     <form onSubmit={handleSend} className="space-y-6">
                         <div className="space-y-4">
-                            {/* Nama PJ */}
+                            {/* Token PJ */}
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-[10px] font-black text-neutral-400 uppercase tracking-widest px-1">
                                     <ShieldCheck size={14} />
-                                    Nama PJ (Token)
+                                    TOKEN PJ
                                 </label>
                                 <input
-                                    type="text"
+                                    type="password"
                                     value={apiKey}
                                     onChange={(e) => setApiKey(e.target.value)}
-                                    placeholder="Masukkan nama PJ Anda..."
+                                    placeholder="••••••••"
                                     className="w-full bg-neutral-50 dark:bg-white/5 border border-neutral-100 dark:border-white/10 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-brand dark:focus:ring-amber-500 outline-none transition-all font-mono"
                                 />
                             </div>
