@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchAppData } from '../utils/api';
-import { BookOpen, Calendar, CaretDown, Users, ArrowsOut, X, Folder } from '@phosphor-icons/react';
+import { BookOpen, Calendar, CaretDown, Users, ArrowsOut, X, Folder, Star, BookmarkSimple } from '@phosphor-icons/react';
+import { useSync } from '../contexts/SyncContext';
 
 const normalizeString = (str) => {
     if (!str) return '';
@@ -42,6 +40,7 @@ const Home = () => {
     const [semester, setSemester] = useState(localStorage.getItem('last_semester') || '3');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { bookmarks, toggleBookmark } = useSync();
 
     // Derived state from URL (No sync lag)
     const selectedCourse = useMemo(() => {
@@ -162,6 +161,27 @@ const Home = () => {
                         <p className="text-neutral-500 dark:text-neutral-400 text-sm">Akses materi berdasarkan semester akademik.</p>
                     </div>
 
+                    {/* Quick Access Favorit (Jika ada) */}
+                    {bookmarks.length > 0 && !courseName && (
+                        <div className="flex-1 max-w-md mx-auto md:mx-0">
+                            <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-2xl p-4 flex items-center gap-4">
+                                <div className="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center flex-shrink-0 animate-pulse">
+                                    <Star size={20} weight="fill" />
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest">Favorit Anda</p>
+                                    <p className="text-xs text-neutral-600 dark:text-neutral-400 truncate font-medium">{bookmarks.length} materi disimpan di cloud</p>
+                                </div>
+                                <button
+                                    onClick={() => navigate('/pengaturan')}
+                                    className="ml-auto text-amber-600 dark:text-amber-400 p-2 hover:bg-amber-500/10 rounded-lg transition-colors"
+                                >
+                                    <BookmarkSimple size={20} />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="relative inline-flex items-center w-full md:w-auto">
                         <select
                             value={semester}
@@ -209,6 +229,8 @@ const Home = () => {
                 <CourseModal
                     course={selectedCourse}
                     materials={data?.materials.filter(m => normalizeString(m.course) === normalizeString(selectedCourse.name)) || []}
+                    bookmarks={bookmarks}
+                    onToggleBookmark={toggleBookmark}
                     onClose={() => handleSelectCourse(null)}
                     onPreview={(file) => handlePreviewFile(file)}
                 />
@@ -253,7 +275,7 @@ const CourseCard = ({ course, onClick }) => (
     </div>
 );
 
-const CourseModal = ({ course, materials, onClose, onPreview }) => {
+const CourseModal = ({ course, materials, bookmarks, onToggleBookmark, onClose, onPreview }) => {
     return (
         <div className="fixed inset-0 z-[998] flex items-center justify-center p-4 md:p-6 animate-in fade-in duration-300">
             <div className="absolute inset-0 bg-neutral-900/60 backdrop-blur-xl" onClick={onClose}></div>
@@ -277,26 +299,46 @@ const CourseModal = ({ course, materials, onClose, onPreview }) => {
                 {/* Modal Content */}
                 <div className="flex-1 overflow-y-auto p-8 space-y-4 custom-scrollbar bg-white dark:bg-[#14231f]">
                     {materials.length > 0 ? (
-                        materials.map((m, i) => (
-                            <div
-                                key={i}
-                                onClick={() => onPreview(m)}
-                                className="group flex items-center justify-between p-5 rounded-3xl border border-neutral-100 dark:border-white/5 bg-white dark:bg-white/5 hover:border-brand/30 dark:hover:border-amber-500/30 hover:shadow-xl hover:shadow-brand/5 transition-all duration-300 cursor-pointer"
-                            >
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-2xl bg-neutral-50 dark:bg-white/5 flex items-center justify-center text-neutral-400 dark:text-neutral-500 group-hover:bg-brand/10 dark:group-hover:bg-amber-500/10 group-hover:text-brand dark:group-hover:text-amber-400 transition-colors">
-                                        <div className="font-black text-[10px] uppercase">{m.type?.slice(0, 3) || 'FILE'}</div>
+                        materials.map((m, i) => {
+                            const isBookmarked = bookmarks.find(b => b.link === m.link);
+                            return (
+                                <div
+                                    key={i}
+                                    className="group flex items-center justify-between p-5 rounded-3xl border border-neutral-100 dark:border-white/5 bg-white dark:bg-white/5 hover:border-brand/30 dark:hover:border-amber-500/30 hover:shadow-xl hover:shadow-brand/5 transition-all duration-300"
+                                >
+                                    <div
+                                        className="flex items-center gap-4 flex-1 cursor-pointer"
+                                        onClick={() => onPreview(m)}
+                                    >
+                                        <div className="w-12 h-12 rounded-2xl bg-neutral-50 dark:bg-white/5 flex items-center justify-center text-neutral-400 dark:text-neutral-500 group-hover:bg-brand/10 dark:group-hover:bg-amber-500/10 group-hover:text-brand dark:group-hover:text-amber-400 transition-colors">
+                                            <div className="font-black text-[10px] uppercase">{m.type?.slice(0, 3) || 'FILE'}</div>
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-neutral-800 dark:text-white text-sm group-hover:text-brand dark:group-hover:text-amber-400 transition-colors line-clamp-1">{m.filename || 'Materi Kuliah'}</p>
+                                            <p className="text-[10px] text-neutral-400 dark:text-neutral-500 font-bold uppercase tracking-widest mt-0.5">{m.size || 'Ketuk untuk Preview'}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="font-bold text-neutral-800 dark:text-white text-sm group-hover:text-brand dark:group-hover:text-amber-400 transition-colors line-clamp-1">{m.filename || 'Materi Kuliah'}</p>
-                                        <p className="text-[10px] text-neutral-400 dark:text-neutral-500 font-bold uppercase tracking-widest mt-0.5">{m.size || 'Ketuk untuk Preview'}</p>
+
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onToggleBookmark(m);
+                                            }}
+                                            className={`p-3 rounded-2xl transition-all ${isBookmarked ? 'bg-amber-500 text-white' : 'bg-neutral-50 dark:bg-white/5 text-neutral-300 dark:text-neutral-700 hover:text-amber-500'}`}
+                                        >
+                                            <Star size={18} weight={isBookmarked ? "fill" : "bold"} />
+                                        </button>
+                                        <div
+                                            onClick={() => onPreview(m)}
+                                            className="w-10 h-10 rounded-2xl bg-neutral-50 dark:bg-white/10 flex items-center justify-center text-neutral-300 dark:text-neutral-500 group-hover:bg-brand dark:group-hover:bg-amber-500 group-hover:text-white transition-all transform group-hover:translate-x-1 cursor-pointer"
+                                        >
+                                            <CaretDown size={18} weight="bold" className="-rotate-90" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="w-8 h-8 rounded-full bg-neutral-50 dark:bg-white/10 flex items-center justify-center text-neutral-300 dark:text-neutral-500 group-hover:bg-brand dark:group-hover:bg-amber-500 group-hover:text-white transition-all transform group-hover:translate-x-1">
-                                    <CaretDown size={16} weight="bold" className="-rotate-90" />
-                                </div>
-                            </div>
-                        ))
+                            );
+                        })
                     ) : (
                         <div className="py-20 text-center border-2 border-dashed border-neutral-100 dark:border-white/5 rounded-[2rem] bg-neutral-50/50 dark:bg-white/5">
                             <BookOpen size={48} className="mx-auto text-neutral-200 dark:text-neutral-800 mb-4" />

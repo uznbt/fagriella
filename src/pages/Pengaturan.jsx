@@ -1,11 +1,14 @@
-import React from 'react';
-import { Gear, Moon, Sun, Bell, ShieldCheck, Palette } from '@phosphor-icons/react';
+import { Gear, Moon, Sun, Bell, ShieldCheck, Palette, CloudArrowUp, Key, Trash, CheckCircle } from '@phosphor-icons/react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNotification } from '../contexts/NotificationContext';
+import { useSync } from '../contexts/SyncContext';
 
 const Pengaturan = () => {
     const { isDarkMode, toggleTheme } = useTheme();
     const { isSubscribed, isSupported, subscribe, unsubscribe } = useNotification();
+    const { syncToken, isSyncing, lastSync, login, logout, pushData } = useSync();
+    const [tokenInput, setTokenInput] = React.useState('');
+    const [status, setStatus] = React.useState({ type: '', msg: '' });
 
     const handleToggleNotif = async () => {
         if (isSubscribed) {
@@ -15,6 +18,23 @@ const Pengaturan = () => {
             if (!success) {
                 alert("Gagal mengaktifkan notifikasi. Silakan izinkan di browser.");
             }
+        }
+    };
+
+    const handleSync = async (e) => {
+        e.preventDefault();
+        if (!tokenInput.trim()) return;
+
+        setStatus({ type: 'loading', msg: 'Menghubungkan...' });
+        const success = await login(tokenInput.trim());
+
+        if (success) {
+            setStatus({ type: 'success', msg: 'Sinkronisasi Berhasil!' });
+            setTokenInput('');
+            setTimeout(() => setStatus({ type: '', msg: '' }), 3000);
+        } else {
+            setStatus({ type: 'error', msg: 'Token baru dibuat / Gagal sinkron.' });
+            setTimeout(() => setStatus({ type: '', msg: '' }), 3000);
         }
     };
 
@@ -92,6 +112,84 @@ const Pengaturan = () => {
                     <div className="card p-5 bg-neutral-50/50 dark:bg-white/5 border-dashed border-2 dark:border-white/5 text-center space-y-2">
                         <p className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">Data Anda Aman</p>
                         <p className="text-[11px] text-neutral-500 dark:text-neutral-400 max-w-xs mx-auto">Kami tidak menyimpan data pribadi sensitif. Semua informasi materi bersifat terbuka untuk publik angkatan.</p>
+                    </div>
+                </section>
+
+                {/* Cloud Sync */}
+                <section className="space-y-4">
+                    <div className="flex items-center justify-between px-2">
+                        <h3 className="flex items-center gap-2 font-bold text-neutral-800 dark:text-white">
+                            <CloudArrowUp size={20} weight="duotone" className="text-brand dark:text-amber-400" />
+                            Sinkronisasi Cloud
+                        </h3>
+                        {syncToken && (
+                            <span className="text-[10px] font-black text-brand dark:text-amber-500 uppercase tracking-widest bg-brand/10 dark:bg-amber-500/10 px-2 py-1 rounded-lg animate-pulse">
+                                Aktif
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="card p-6 space-y-6">
+                        {!syncToken ? (
+                            <form onSubmit={handleSync} className="space-y-4">
+                                <div className="space-y-2">
+                                    <p className="text-xs text-neutral-500 dark:text-neutral-400">Gunakan satu "Kata Rahasia" (contoh: Nama Kota/Hobi) untuk menyimpan materi favorit & tema agar bisa dibuka di perangkat lain.</p>
+                                    <div className="relative">
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+                                            <Key size={18} />
+                                        </div>
+                                        <input
+                                            type="text"
+                                            value={tokenInput}
+                                            onChange={(e) => setTokenInput(e.target.value)}
+                                            placeholder="Masukkan Kata Rahasia..."
+                                            className="w-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:ring-2 focus:ring-brand dark:focus:ring-amber-500 outline-none transition-all"
+                                        />
+                                    </div>
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={!tokenInput.trim() || status.type === 'loading'}
+                                    className="w-full bg-brand dark:bg-amber-500 text-white dark:text-black py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 shadow-lg shadow-brand/20 dark:shadow-amber-900/10"
+                                >
+                                    {status.type === 'loading' ? 'MENGHUBUNGKAN...' : 'SINKRONKAN SEKARANG'}
+                                </button>
+                                {status.msg && (
+                                    <p className={`text-[10px] text-center font-bold uppercase tracking-widest ${status.type === 'error' ? 'text-red-500' : 'text-brand dark:text-amber-500'}`}>
+                                        {status.msg}
+                                    </p>
+                                )}
+                            </form>
+                        ) : (
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-4 bg-neutral-50 dark:bg-white/5 p-4 rounded-2xl border border-neutral-100 dark:border-white/5">
+                                    <div className="w-12 h-12 bg-brand/10 dark:bg-amber-500/10 text-brand dark:text-amber-500 rounded-2xl flex items-center justify-center">
+                                        <CheckCircle size={24} weight="fill" />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest">Perangkat Terhubung</p>
+                                        <p className="text-sm font-black text-neutral-800 dark:text-white truncate">Token: {syncToken}</p>
+                                        <p className="text-[10px] text-neutral-500 mt-0.5">Sync Terakhir: {lastSync || 'Sesaat lalu'}</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        onClick={() => pushData()}
+                                        className="bg-neutral-100 dark:bg-white/10 text-neutral-600 dark:text-neutral-300 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-neutral-200 dark:hover:bg-white/20 transition-all"
+                                    >
+                                        Paksa Sync
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            if (confirm('Putus sinkronisasi? Data lokal tidak akan hilang tapi tidak akan lagi terhubung ke cloud.')) logout();
+                                        }}
+                                        className="bg-red-50 dark:bg-red-500/10 text-red-500 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all"
+                                    >
+                                        Putus Koneksi
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </section>
 

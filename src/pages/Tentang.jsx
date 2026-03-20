@@ -22,14 +22,17 @@ const Tentang = () => {
                     </p>
                 </div>
 
-                <div className="card p-6 border-l-4 border-l-accent">
-                    <h3 className="flex items-center gap-2 font-bold text-brand mb-4">
-                        <InstagramLogo size={24} weight="bold" />
-                        Hubungi Kami
+                <div className="card p-6 border-l-4 border-l-amber-500">
+                    <h3 className="flex items-center gap-2 font-bold text-brand dark:text-amber-500 mb-4">
+                        <ShieldCheck size={24} weight="bold" />
+                        Admin Center
                     </h3>
-                    <p className="text-neutral-600 leading-relaxed">
-                        Punya saran atau materi tambahan? Hubungi pengembang melalui platform sosial media kami.
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4">
+                        Khusus untuk Pengurus/PJ angkatan untuk mengirim broadcast notifikasi ke seluruh mahasiswa.
                     </p>
+                    <a href="/admin" className="inline-flex items-center gap-2 text-brand dark:text-amber-400 font-bold text-sm hover:underline">
+                        Masuk ke Panel Admin →
+                    </a>
                 </div>
             </div>
 
