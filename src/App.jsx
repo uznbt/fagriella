@@ -14,6 +14,7 @@ import PanduanUpload from './pages/PanduanUpload';
 import Pengaturan from './pages/Pengaturan';
 import Dokumentasi from './pages/Dokumentasi';
 import ResultView from './pages/ResultView';
+import Admin from './pages/Admin';
 
 // ... other pages
 
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/tentang" element={<Tentang />} />
                     <Route path="/panduan-upload" element={<PanduanUpload />} />
                     <Route path="/pengaturan" element={<Pengaturan />} />
+                    <Route path="/admin" element={<Admin />} />
 
                     {/* Home routes with dynamic params */}
                     <Route path="/:smtParam" element={<Home />} />
