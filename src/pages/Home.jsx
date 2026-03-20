@@ -1,4 +1,7 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { BookOpen, Calendar, CaretDown, Users, ArrowsOut, X, Folder, Star, BookmarkSimple } from '@phosphor-icons/react';
+import { fetchAppData } from '../utils/api';
 import { useSync } from '../contexts/SyncContext';
 
 const normalizeString = (str) => {

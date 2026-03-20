@@ -1,3 +1,4 @@
+import React from 'react';
 import { Gear, Moon, Sun, Bell, ShieldCheck, Palette, CloudArrowUp, Key, Trash, CheckCircle } from '@phosphor-icons/react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNotification } from '../contexts/NotificationContext';
