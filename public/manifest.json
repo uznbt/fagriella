@@ -1,0 +1,48 @@
+{
+    "name": "F.AGRIELLA",
+    "short_name": "F.AGRIELLA",
+    "description": "Arsip materi, tugas, foto, dan info kuliah dalam satu tempat.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#0b1311",
+    "theme_color": "#1e3932",
+    "lang": "id",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "categories": [
+        "education",
+        "productivity"
+    ],
+    "shortcuts": [
+        {
+            "name": "Materi",
+            "url": "/",
+            "description": "Dashboard Materi"
+        },
+        {
+            "name": "Spin",
+            "url": "/undi",
+            "description": "Mesin Spin Kelompok"
+        }
+    ]
+}

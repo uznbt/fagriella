@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --brand-dark: #1e3932;
+    --brand-accent: #fbbf24;
+}
+
+@layer base {
+    body {
+        @apply font-outfit antialiased selection:bg-brand selection:text-white;
+    }
+
+    /* Custom Scrollbar for both themes */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-neutral-200 dark:bg-white/10 rounded-full border-2 border-transparent bg-clip-padding hover:bg-neutral-300 dark:hover:bg-white/20 transition-colors;
+    }
+}
+
+.font-outfit {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Base Styles */
+.bg-brand {
+    background-color: #1e3932;
+}
+
+.text-brand {
+    color: #1e3932;
+}
+
+/* Documentation Premium Styles */
+.markdown-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: #4b5563;
+}
+
+.dark .markdown-content {
+    color: #9ca3af;
+}
+
+.markdown-content h1 {
+    font-size: 2.75rem;
+    font-weight: 900;
+    margin-bottom: 2.5rem;
+    color: #1e3932;
+    letter-spacing: -0.05em;
+    line-height: 1.1;
+}
+
+.dark .markdown-content h1 {
+    color: #fbbf24;
+}
+
+.markdown-content h2 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    margin: 4rem 0 1.5rem;
+    color: #1e3932;
+    border-bottom: 2px solid rgba(30, 57, 50, 0.05);
+    padding-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.dark .markdown-content h2 {
+    color: #fbbf24;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.markdown-content h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    color: #1e3932;
+}
+
+.dark .markdown-content h3 {
+    color: #ffffff;
+}
+
+.markdown-content p {
+    margin-bottom: 1.5rem;
+}
+
+.markdown-content strong {
+    color: #1e3932;
+    font-weight: 800;
+}
+
+.dark .markdown-content strong {
+    color: #fbbf24;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.markdown-content li {
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.markdown-content ul li::before {
+    content: "•";
+    color: #fbbf24;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.markdown-content blockquote {
+    border-left: 6px solid #1e3932;
+    background: rgba(30, 57, 50, 0.04);
+    padding: 2rem 2.5rem;
+    border-radius: 0 1.5rem 1.5rem 0;
+    margin: 3.5rem 0;
+    font-style: italic;
+    font-size: 1.15rem;
+}
+
+.dark .markdown-content blockquote {
+    border-left-color: #fbbf24;
+    background: rgba(251, 191, 36, 0.04);
+}
+
+.markdown-content img {
+    border-radius: 1.25rem;
+    margin: 3.5rem auto;
+    display: block;
+    max-width: 100%;
+    border: 1px solid rgba(30, 57, 50, 0.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    cursor: zoom-in;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.markdown-content img:hover {
+    transform: scale(1.02);
+}
+
+.dark .markdown-content img {
+    border-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Special Case for Pengenalan Page Images */
+.markdown-content[data-page="pengenalan"] img {
+    max-width: 70%;
+}
+
+@media (max-width: 768px) {
+    .markdown-content[data-page="pengenalan"] img {
+        max-width: 100%;
+    }
+}
+
+.markdown-content pre {
+    background: #0d1117;
+    color: #e6edf3;
+    padding: 2rem;
+    border-radius: 1.25rem;
+    overflow-x: auto;
+    margin: 3rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.markdown-content code {
+    background: #f1f5f9;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #1e3932;
+    font-weight: 600;
+}
+
+.dark .markdown-content code {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fbbf24;
+}
+
+.markdown-content table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 3.5rem 0;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.dark .markdown-content table {
+    border-color: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.markdown-content th {
+    background: #1e3932;
+    color: white;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+}
+
+.dark .markdown-content th {
+    background: #fbbf24;
+    color: #1e3932;
+}
+
+.markdown-content td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.95rem;
+}
+
+.dark .markdown-content td {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.markdown-content tr:last-child td {
+    border-bottom: none;
+}
+
+.mermaid {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(30, 57, 50, 0.05);
+    margin: 3rem 0;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.dark .mermaid {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Alerts specifically for documentation */
+.markdown-content blockquote p:first-child strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}

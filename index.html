@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="F.AGRIELLA — Arsip materi, tugas, foto, dan info kuliah dalam satu tempat.">
+    <meta name="keywords"
+        content="agribisnis, agribisnis unsika, unsika, universitas singaperbangsa karawang, fakultas pertanian unsika, arsip kuliah agribisnis, fagriella">
+    <meta name="author" content="F.AGRIELLA">
+    <meta name="theme-color" content="#1e3932">
+    <link rel="icon" type="image/webp" href="/analisis/images/logo/F.AGRIELLA.webp" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="F.AGRIELLA — Arsip Kuliah Agribisnis UNSIKA">
+    <meta property="og:description" content="Arsip materi, tugas, foto, dan info kuliah dalam satu tempat.">
+    <meta property="og:image" content="/analisis/images/logo/F.AGRIELLA.webp">
+
+    <title>Arsip Kuliah - F.Agriella</title>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="F.AGRIELLA">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <meta name="theme-color" content="#1e3932">
+
+    <!-- Phosphor Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <!-- PWA Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Fail:', err));
+            });
+        }
+    </script>
+</body>
+
+</html>
