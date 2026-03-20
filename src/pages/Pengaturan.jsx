@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Gear, Moon, Sun, Bell, ShieldCheck, Palette } from '@phosphor-icons/react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useNotification } from '../contexts/NotificationContext';
 
 const Pengaturan = () => {
     const { isDarkMode, toggleTheme } = useTheme();
-    const [notifications, setNotifications] = useState(true);
+    const { isSubscribed, isSupported, subscribe, unsubscribe } = useNotification();
+
+    const handleToggleNotif = async () => {
+        if (isSubscribed) {
+            await unsubscribe();
+        } else {
+            const success = await subscribe();
+            if (!success) {
+                alert("Gagal mengaktifkan notifikasi. Silakan izinkan di browser.");
+            }
+        }
+    };
 
     return (
         <div className="max-w-2xl mx-auto space-y-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -47,7 +59,7 @@ const Pengaturan = () => {
                         Notifikasi
                     </h3>
                     <div className="card divide-y divide-neutral-50 dark:divide-white/5">
-                        <div className="p-5 flex items-center justify-between">
+                        <div className="p-5 flex items-center justify-between opacity-100 disabled:opacity-50">
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-white/5 flex items-center justify-center text-neutral-500 dark:text-neutral-400">
                                     <Bell size={20} weight="bold" />
@@ -58,12 +70,16 @@ const Pengaturan = () => {
                                 </div>
                             </div>
                             <button
-                                onClick={() => setNotifications(!notifications)}
-                                className={`w-12 h-6 rounded-full transition-colors relative ${notifications ? 'bg-brand' : 'bg-neutral-200'}`}
+                                onClick={handleToggleNotif}
+                                disabled={!isSupported}
+                                className={`w-12 h-6 rounded-full transition-colors relative ${isSubscribed ? 'bg-brand dark:bg-amber-500' : 'bg-neutral-200 dark:bg-white/10'}`}
                             >
-                                <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${notifications ? 'left-7' : 'left-1'}`}></div>
+                                <div className={`absolute top-1 w-4 h-4 bg-white dark:bg-neutral-900 rounded-full transition-all ${isSubscribed ? 'left-7' : 'left-1'}`}></div>
                             </button>
                         </div>
+                        {!isSupported && (
+                            <p className="p-4 text-[10px] text-red-500 text-center font-bold uppercase tracking-widest">Browser tidak mendukung Push Notifications</p>
+                        )}
                     </div>
                 </section>
 
