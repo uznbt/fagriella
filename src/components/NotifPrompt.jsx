@@ -46,16 +46,16 @@ const NotifPrompt = () => {
                         <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">Dapatkan info tugas & jadwal kuliah terbaru.</p>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 items-center">
                         <button
                             onClick={handleDismiss}
-                            className="p-2 text-neutral-400 hover:text-neutral-600 dark:hover:text-white transition-colors"
+                            className="px-2 py-2 text-neutral-400 hover:text-neutral-600 dark:hover:text-white text-[10px] font-black uppercase tracking-wider transition-colors"
                         >
-                            <X size={20} />
+                            Nanti
                         </button>
                         <button
                             onClick={handleAccept}
-                            className="bg-brand dark:bg-amber-500 text-white dark:text-black px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:opacity-90 transition-all active:scale-95"
+                            className="bg-brand dark:bg-amber-500 text-white dark:text-black px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-brand/20 dark:shadow-amber-500/10"
                         >
                             Izinkan
                         </button>
